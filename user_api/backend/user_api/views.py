@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
 from rest_framework import permissions, status
 from .validations import custom_validation, validate_email, validate_password
-from rest_framework import generics
+from rest_framework import viewsets
 from user_api.models import AppUser
 
 
@@ -44,15 +44,30 @@ class UserLogout(APIView):
 		return Response(status=status.HTTP_200_OK)
 
 
-# class UserView(APIView):
-# 	permission_classes = (permissions.IsAuthenticated,)
-# 	authentication_classes = (SessionAuthentication,)
-# 	##
-# 	def get(self, request):
-# 		serializer = UserSerializer(request.user)
-# 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+class UserProfileList(APIView):
+    def get(self, request):
+        profiles = AppUser.objects.all()
+        serializer = UserSerializer(profiles, many=True)
+        return Response(serializer.data)
 
-class UserList(generics.ListAPIView):
-    queryset = AppUser.objects.all()
-    serializer_class = UserSerializer
+    # def put(self, request, pk):
+    #     profile = AppUser.objects.get(pk=pk)
+    #     serializer = UserSerializer(profile, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class UserProfileUpdate(APIView):
+    def put(self, request, pk):
+        try:
+            profile = AppUser.objects.get(pk=pk)
+            serializer = UserSerializer(profile, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except AppUser.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
 

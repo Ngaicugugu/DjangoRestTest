@@ -7,7 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ListUser from './views/User/ListUser';
+import Users from './views/User/Users';
 
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -108,7 +108,7 @@ function App() {
           </Container>
         </Navbar>
         <div className="center">
-          <ListUser />
+          <Users />
         </div>
       </div>
     );

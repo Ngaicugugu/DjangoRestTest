@@ -91,7 +91,10 @@ DATABASES = {
 }
 
 ## User model
+
 AUTH_USER_MODEL = 'user_api.AppUser'
+
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000']
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
