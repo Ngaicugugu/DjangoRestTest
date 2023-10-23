@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Table } from 'reactstrap';
 
 class Users extends React.Component {
     state = {
@@ -49,32 +50,55 @@ class Users extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>User List</h1>
-                <ul>
-                    {this.state.users.map(user => (
-                        <li key={user.user_id}>
-                            {user.username} - {user.email}
-                            <button onClick={() => this.handleEditClick(user.user_id, user.username, user.email)}>Edit</button>
-                        </li>
-                    ))}
-                </ul>
-                {this.state.editUserId && (
-                    <div>
-                        <input
-                            type="text"
-                            value={this.state.editedUserName}
-                            onChange={e => this.setState({ editedUserName: e.target.value })}
-                        />
-                        <input
-                            type="text"
-                            value={this.state.editedUserEmail}
-                            onChange={e => this.setState({ editedUserEmail: e.target.value })}
-                        />
-                        <button onClick={this.handleSaveClick}>Save</button>
+            <>
+                <div style={{ display: 'flex', flexDirection: 'column', width: 'full', justifyContent: 'center', alignItems: 'center', paddingTop: '80px' }}>
+
+                    <h1 style={{ paddingBottom: '30px', textDecoration: 'underline', textDecorationColor: 'red' }}>User List</h1>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        <ul style={{ listStyleType: 'inherit' }}>
+                            <Table striped bordered hover variant="dark">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>User Name</th>
+                                        <th>Email</th>
+                                        <th>Option</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.users.map((user) => (
+                                        <tr key={user.user_id}>
+                                            <td style={{ fontWeight: '600' }}>{user.user_id}</td>
+                                            <td>{user.username}</td>
+                                            <td>{user.email}</td>
+                                            <td style={{ textAlign: 'center' }}>
+                                                <button onClick={() => this.handleEditClick(user.user_id, user.username, user.email)} style={{ backgroundColor: 'orange', fontSize: '1.2rem', fontWeight: 600, minWidth: '100px', borderRadius: '5px' }}>Edit</button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        </ul>
+
+                        {this.state.editUserId && (
+                            <div>
+                                <input
+                                    type="text"
+                                    value={this.state.editedUserName}
+                                    onChange={e => this.setState({ editedUserName: e.target.value })}
+                                />
+                                <input
+                                    type="text"
+                                    value={this.state.editedUserEmail}
+                                    onChange={e => this.setState({ editedUserEmail: e.target.value })}
+                                />
+                                <button onClick={this.handleSaveClick}>Save</button>
+                            </div>
+                        )}
                     </div>
-                )}
-            </div>
+                </div>
+            </>
+
         );
     }
 }
